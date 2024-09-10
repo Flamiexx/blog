@@ -30,3 +30,16 @@ def delete_post(post_id):
     db.session.commit()
     flash('Post has been deleted!', 'success')
     return redirect(url_for('main.home'))
+
+
+@main.route('/post/edit/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if request.method == 'POST':
+        post.title = request.form['title']
+        post.content = request.form['content']
+        db.session.commit()
+        flash('Post has been updated!', 'success')
+        return redirect(url_for('main.home'))
+
+    return render_template('edit_post.html', post=post)
